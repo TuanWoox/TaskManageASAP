@@ -15,9 +15,9 @@ namespace WebApplication1.Controllers
     
         private readonly TaskService taskService;
 
-        public TaskController(AppDbContext dbContext)
+        public TaskController(TaskService taskService)
         {
-            taskService = new TaskService(dbContext);
+            this.taskService = taskService;
         }
 
         //GET api/tasks => to get tasks, right now is all but future possible have pagination

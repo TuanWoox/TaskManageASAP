@@ -11,9 +11,9 @@ namespace WebApplication1.Services
     {
         private readonly TaskRepository taskRepository;
 
-        public TaskService(AppDbContext dbContext)
+        public TaskService(TaskRepository taskRepository)
         {
-            this.taskRepository = new TaskRepository(dbContext);
+            this.taskRepository = taskRepository;
         }
         
         public List<TaskDTO> FindTasks()

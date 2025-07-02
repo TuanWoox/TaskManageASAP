@@ -15,6 +15,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WebApplication1.Data;
+using WebApplication1.Repositories;
+using WebApplication1.Services;
 
 namespace WebApplication1
 {
@@ -47,6 +49,11 @@ namespace WebApplication1
                 )
             );
 
+            // Add DI for repos
+            AddDIForRepos(services);
+
+            // Add DI for services
+            AddDIForServices(services);
 
             // Add controllers + JSON settings
             services.AddControllersWithViews()
@@ -66,6 +73,16 @@ namespace WebApplication1
                     Version = "v1"
                 });
             });
+        }
+
+        public void AddDIForRepos(IServiceCollection services)
+        {
+            services.AddScoped<TaskRepository>();
+        }
+
+        public void AddDIForServices(IServiceCollection services)
+        {
+            services.AddScoped<TaskService>();
         }
 
 
