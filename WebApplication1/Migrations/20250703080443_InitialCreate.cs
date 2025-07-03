@@ -66,6 +66,8 @@ namespace WebApplication1.Migrations
                     createdby = table.Column<int>(type: "int", nullable: false),
                     updatedBy = table.Column<int>(type: "int", nullable: false),
                     datestarted = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    status = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
                     deadlinedate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     isdeleted = table.Column<bool>(type: "tinyint(1)", nullable: false)
                 },

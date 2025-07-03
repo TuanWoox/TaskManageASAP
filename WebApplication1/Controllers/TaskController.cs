@@ -1,4 +1,5 @@
 ﻿
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -7,8 +8,9 @@ using WebApplication1.Services;
 
 namespace WebApplication1.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/tasks")]
     [ApiController]
+    [Authorize]
     public class TaskController : ControllerBase
     {
     
@@ -21,6 +23,7 @@ namespace WebApplication1.Controllers
 
         //GET api/tasks => to get tasks, right now is all but future possible have pagination
         [HttpGet]
+        
         public ActionResult<IEnumerable<TaskDTO>> GetTasks()
         {
             try
@@ -41,6 +44,7 @@ namespace WebApplication1.Controllers
             try
             {
                 TaskDTO task = taskService.FindOneTask(id);
+                if (task == null) return NotFound();
                 return Ok(task);
             } catch(Exception ex)
             {
@@ -71,11 +75,13 @@ namespace WebApplication1.Controllers
 
         //PUT api/tasks/id => to adjust one task, return a completely new, just need to return true
         [HttpPut("{id}")]
+        [RequireAdminForDoneStatus]
         public ActionResult UpdateOneTask([FromBody] UpdateTaskDTO updateTaskDTO, int id)
         {
             try
             {
-                if (taskService.UpdateNewTask(updateTaskDTO,id))
+                bool updatedSuccessfully = taskService.UpdateNewTask(updateTaskDTO, id);
+                if (updatedSuccessfully)
                 {
                     return Ok();
                 }
@@ -93,7 +99,8 @@ namespace WebApplication1.Controllers
         {
             try
             {
-                if(taskService.DeleteTask(id))
+                bool deletedSuccesfully = taskService.DeleteTask(id);
+                if (deletedSuccesfully)
                 {
                     return Ok();
                 }

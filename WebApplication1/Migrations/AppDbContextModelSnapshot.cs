@@ -67,6 +67,10 @@ namespace WebApplication1.Migrations
                         .HasColumnType("longtext")
                         .HasColumnName("name");
 
+                    b.Property<string>("Status")
+                        .HasColumnType("longtext")
+                        .HasColumnName("status");
+
                     b.Property<int>("UpdatedBy")
                         .HasColumnType("int")
                         .HasColumnName("updatedBy");

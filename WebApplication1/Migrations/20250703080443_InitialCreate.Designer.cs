@@ -9,7 +9,7 @@ using WebApplication1.Data;
 namespace WebApplication1.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250703025848_InitialCreate")]
+    [Migration("20250703080443_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -68,6 +68,10 @@ namespace WebApplication1.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("longtext")
                         .HasColumnName("name");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("longtext")
+                        .HasColumnName("status");
 
                     b.Property<int>("UpdatedBy")
                         .HasColumnType("int")

@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Http;
+using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using WebApplication1.Data;
 using WebApplication1.DTOs.TaskDTO;
 using WebApplication1.Models;
@@ -9,9 +11,11 @@ namespace WebApplication1.Repositories
     public class TaskRepository
     {
         private readonly AppDbContext _dbContext;
-        public TaskRepository(AppDbContext dbContext)
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        public TaskRepository(AppDbContext dbContext, IHttpContextAccessor httpContextAccessor)
         {
             _dbContext = dbContext;
+            _httpContextAccessor = httpContextAccessor;
         }
         public List<Task> FindAll()
         {
@@ -49,7 +53,7 @@ namespace WebApplication1.Repositories
             existingTask.Name = updateTaskDTO.Name;
             existingTask.Description = updateTaskDTO.Description;
             existingTask.AssignedTo = updateTaskDTO.AssignedTo;
-            existingTask.UpdatedBy = updateTaskDTO.UpdatedBy;
+            existingTask.UpdatedBy = TakeUserIdOutOfToken();
             existingTask.DateStarted = updateTaskDTO.DateStarted;
             existingTask.DeadlineDate = updateTaskDTO.DeadlineDate;
 
@@ -72,18 +76,27 @@ namespace WebApplication1.Repositories
         }
         private Task ConvertCreateDTOTOne(CreateTaskDTO createTaskDTO)
         {
+            
+
             return new Task
             {
                 Name = createTaskDTO.Name,
                 Description = createTaskDTO.Description,
                 AssignedTo = createTaskDTO.AssignedTo,
-                CreatedBy = createTaskDTO.CreatedBy,
-                UpdatedBy = createTaskDTO.UpdatedBy,
+                CreatedBy = TakeUserIdOutOfToken(),
+                UpdatedBy = TakeUserIdOutOfToken(),
                 DateStarted = createTaskDTO.DateStarted,
                 DeadlineDate = createTaskDTO.DeadlineDate,
-                IsDeleted = false
+                IsDeleted = false,
+                Status = "waiting"
             };
+
         }
-       
+
+        private int TakeUserIdOutOfToken()
+        {
+            var identity = _httpContextAccessor.HttpContext?.User?.Identity as ClaimsIdentity;
+            return int.Parse(identity?.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+        }
     }
 }

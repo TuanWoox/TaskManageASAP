@@ -25,7 +25,7 @@ namespace WebApplication1.Services
         public TaskDTO FindOneTask(int id)
         {
             Task task = taskRepository.FindOneTask(id);
-       
+               
             return ConvertsOneToDTO(task);
         }
         public TaskDTO CreateNewTask(CreateTaskDTO createTaskDTO)
@@ -54,13 +54,15 @@ namespace WebApplication1.Services
                 CreatedBy = task.CreatedBy,
                 UpdatedBy = task.UpdatedBy,
                 DateStarted = task.DateStarted,
-                DeadlineDate = task.DeadlineDate
+                DeadlineDate = task.DeadlineDate,
+                Status = task.Status,
             }).ToList();
         }
 
         //This function is used to convert Task to TaskDTO after fetch so it is private
         private TaskDTO ConvertsOneToDTO(Task task)
         {
+            if(task == null) return null;   
             return new TaskDTO
             {
                 Id = task.Id,
@@ -70,7 +72,8 @@ namespace WebApplication1.Services
                 CreatedBy = task.CreatedBy,
                 UpdatedBy = task.UpdatedBy,
                 DateStarted = task.DateStarted,
-                DeadlineDate = task.DeadlineDate
+                DeadlineDate = task.DeadlineDate,
+                Status = task.Status,
             };
         }
         

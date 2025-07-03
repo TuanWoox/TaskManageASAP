@@ -28,6 +28,9 @@ namespace WebApplication1.Models
         [Column("datestarted")]
         public DateTime DateStarted { get; set; }
 
+        [Column("status")]
+        public string Status { get; set; }
+
         [Column("deadlinedate")]
         public DateTime DeadlineDate { get; set; }
 
