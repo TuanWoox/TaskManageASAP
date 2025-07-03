@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using WebApplication1.Data;
-using WebApplication1.DTOs;
+using WebApplication1.DTOs.TaskDTO;
 using WebApplication1.Models;
 using WebApplication1.Repositories;
 

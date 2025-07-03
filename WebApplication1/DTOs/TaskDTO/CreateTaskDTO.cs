@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace WebApplication1.DTOs
+namespace WebApplication1.DTOs.TaskDTO
 {
 
     public record CreateTaskDTO

@@ -26,7 +26,6 @@ namespace WebApplication1
         {
             Configuration = configuration;
         }
-
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -85,12 +84,14 @@ namespace WebApplication1
             services.AddScoped<TaskService>();
         }
 
-
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            // Apply migrations automatically (Option 1: Automatic)
+            ApplyMigrations(app);
+
             //Enable CORS
-            app.UseCors(options => options.AllowAnyOrigin().AllowAnyHeader().AllowAnyHeader());
+            app.UseCors(options => options.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
 
             if (env.IsDevelopment())
             {
@@ -100,7 +101,6 @@ namespace WebApplication1
             }
 
             app.UseRouting();
-
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
@@ -108,5 +108,29 @@ namespace WebApplication1
                 endpoints.MapControllers();
             });
         }
+
+       //This is migration function => use to create database and update tables if needed
+        private void ApplyMigrations(IApplicationBuilder app)
+        {
+            using var serviceScope = app.ApplicationServices.CreateScope();
+            var context = serviceScope.ServiceProvider.GetService<AppDbContext>();
+
+            try
+            {
+                // Only creates database, doesn't apply migrations
+                context.Database.EnsureCreated();
+
+                // OR apply migrations (which also creates database)
+                context.Database.Migrate();
+            }
+            catch (Exception ex)
+            {
+                // Log the error - you might want to inject ILogger here
+                Console.WriteLine($"Migration error: {ex.Message}");
+                // Optionally rethrow or handle as needed
+            }
+        }
     }
+
+    
 }

@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-
+using WebApplication1.Models;
 namespace WebApplication1.Data
 {
     public class AppDbContext : DbContext
@@ -8,7 +8,15 @@ namespace WebApplication1.Data
             : base(options)
         {
         }
+        //Use to create model
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+           
+        }
 
-        public DbSet<WebApplication1.Models.Task> Tasks { get; set; }
+        public DbSet<Task> Tasks { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<Role> Roles { get; set; }
     }
 }

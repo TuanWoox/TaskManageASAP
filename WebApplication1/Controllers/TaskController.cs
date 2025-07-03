@@ -1,9 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using WebApplication1.Data;
-using WebApplication1.DTOs;
+using WebApplication1.DTOs.TaskDTO;
 using WebApplication1.Services;
 
 namespace WebApplication1.Controllers
